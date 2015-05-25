@@ -21,7 +21,8 @@ add 'id' elements to the HTML or use DOM selectors.
 
 ## Submitting Answers
 
-Upload your code to Github and send a pull request against the original repo, then
-send an email with your name / contact information and a link to your repo
-to [glazziq-dev-interview@glazziq.com](mailto:glazziq-dev-interview@glazziq.com).
+Package your entire repo into a `.tar.gz` file and email it to
+[glazziq-dev-interview@glazziq.com](mailto:glazziq-dev-interview@glazziq.com).
+Be sure to send the entire repository so it can be extracted and run
+with no additional external dependencies.
 

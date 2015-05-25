@@ -45,25 +45,33 @@ function ($s) {
 
 }])
     .factory('todoApi', [function () {
-    var data = {
-        shopping: [{
+    var data = [
+        {
+            list: 'shopping',
             name: 'buy eggs',
             complete: false
-        }, {
+        }, 
+        {
+            list: 'shopping',
             name: 'buy milk',
             complete: true
-        }],
-        business: [{
+        },
+        {
+            list: 'business',
             name: 'collect underpants',
             complete: false
-        }, {
+        }, 
+        {
+            list: 'business',
             name: '...',
             complete: false
-        }, {
+        }, 
+        {
+            list: 'business',
             name: 'profit',
             complete: false
-        }]
-    };
+        }
+    ];
     return {
         query: function () {
             return data;
