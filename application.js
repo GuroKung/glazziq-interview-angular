@@ -2,7 +2,9 @@ angular.module('todo', [])
     .controller('page', ['$scope',
 
 function ($s) {
+    $s.editorEnabled = false;
     var uiCurrent = 1;
+    var totalTab = 2;
     $s.ui = {
         current: function (newUICurrent) {
             if (typeof newUICurrent != 'undefined') {
@@ -14,25 +16,20 @@ function ($s) {
             return (uiCurrent === c);
         }
     };
-}])
-    .controller('tab1', ['$scope',
 
-function ($s) {
-
-    $s.list = [{
+    $s.tabs = [{
+        title: 'Shopping',
+        number: 1,
+        list : [{
         name: 'buy eggs',
         complete: false
     }, {
         name: 'buy milk',
         complete: true
-    }];
-
-}])
-    .controller('tab2', ['$scope',
-
-function ($s) {
-
-    $s.list = [{
+    }]},{
+        title: 'Business',
+        number: 2,
+        list : [{
         name: 'collect underpants',
         complete: false
     }, {
@@ -41,8 +38,45 @@ function ($s) {
     }, {
         name: 'profit',
         complete: false
-    }];
+    }]}
+    ];
+    $s.create = function(){
+        totalTab++;
+        $s.tabs.push({
+            title: $s.newTabName,
+            number: totalTab,
+            list: []
+        });
+        $s.newTabName = "";
+    }
+    $s.add = function(tab, newList){
+        tab.list.push({
+            name: newList,
+            complete: false
+        })      
+    }
+    $s.moveToTab = function(index,item){
+        trans = item
+    }
+}])
+    .controller('tab1', ['$scope',
 
+function ($s) {
+    $s.editorEnabled = false;
+    $s.list = [{
+        name: 'buy eggs',
+        complete: false
+    }, {
+        name: 'buy milk',
+        complete: true
+    }];
+    $s.add = function() {
+        $s.list.push({
+            name: $s.newList,
+            complete: false
+        });
+        $s.newList = "";
+    };
 }])
     .factory('todoApi', [function () {
     var data = [
@@ -93,3 +127,4 @@ function ($s) {
         }
     };
 }]);
+

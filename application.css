@@ -1,3 +1,12 @@
+
+body{
+	padding-left: 20;
+}
 .done {
     text-decoration: line-through;
+}
+
+.trans{
+	width: 40px;
+	text-align: center;
 }
