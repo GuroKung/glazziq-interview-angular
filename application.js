@@ -1,10 +1,12 @@
 angular.module('todo', [])
-    .controller('page', ['$scope',
+    .controller('page', ['$scope','todoApi',
 
-function ($s) {
+function ($s,todoApi) {
     $s.editorEnabled = false;
+    $s.moveIndex = 1;
     var uiCurrent = 1;
-    var totalTab = 2;
+    $s.totalTab;
+    $s.tabs;
     $s.ui = {
         current: function (newUICurrent) {
             if (typeof newUICurrent != 'undefined') {
@@ -16,92 +18,130 @@ function ($s) {
             return (uiCurrent === c);
         }
     };
-
+    /*
+    Data adapter from todoApi
+    it should look like this
     $s.tabs = [{
-        title: 'Shopping',
+        title: 'shopping',
         number: 1,
         list : [{
         name: 'buy eggs',
         complete: false
-    }, {
-        name: 'buy milk',
-        complete: true
-    }]},{
-        title: 'Business',
-        number: 2,
-        list : [{
-        name: 'collect underpants',
-        complete: false
-    }, {
-        name: '...',
-        complete: false
-    }, {
-        name: 'profit',
-        complete: false
-    }]}
-    ];
+    }];*/
+    var getData = function(){
+        $s.tabs = [];
+        $s.totalTab = 0;
+        var data = todoApi.query();
+        var contain;
+        for(var i = 0; i < data.length ; i++){
+            contain = false;
+            for(var j = 0; j < $s.tabs.length ; j++){
+                if(data[i].list == $s.tabs[j].title){
+                    contain = true;
+                    $s.tabs[j].list.push({
+                        name: data[i].name,
+                        complete: data[i].complete
+                    });
+                    break;
+                }
+            }
+            if(contain == false){
+                $s.totalTab++;
+                $s.tabs.push({
+                    title: data[i].list,
+                    number: $s.totalTab,
+                    list: [{
+                        name: data[i].name,
+                        complete: data[i].complete
+                    }]
+                });
+            }
+        }
+    }
+    getData();
+
     $s.create = function(){
-        totalTab++;
+        /* create new tab
+        if it's build up and not in use, later on it will collapse itself */
+        $s.totalTab++;
         $s.tabs.push({
             title: $s.newTabName,
-            number: totalTab,
+            number: $s.totalTab,
             list: []
         });
         $s.newTabName = "";
     }
     $s.add = function(tab, newList){
-        tab.list.push({
+        // create on todoApi
+        todoApi.create({
+            list: tab.title,
             name: newList,
             complete: false
-        })      
-    }
-    $s.moveToTab = function(index,item){
-        trans = item
-    }
-}])
-    .controller('tab1', ['$scope',
-
-function ($s) {
-    $s.editorEnabled = false;
-    $s.list = [{
-        name: 'buy eggs',
-        complete: false
-    }, {
-        name: 'buy milk',
-        complete: true
-    }];
-    $s.add = function() {
-        $s.list.push({
-            name: $s.newList,
-            complete: false
         });
-        $s.newList = "";
-    };
+        getData();     
+    }
+    var printData = function(){
+        // use for debug
+        var data = todoApi.query();
+        for(var i=0 ; i < data.length ;i++){
+            console.log("list: "+data[i].list+"\n name: "+data[i].name+"\n complete: "+data[i].complete);
+        }
+    }
+    $s.update = function(){
+        //update todoApi
+        var count=0;
+        for(var i=0 ; i< $s.tabs.length ;i++){
+            for(var j=0; j< $s.tabs[i].list.length; j++){
+                todoApi.update(count,{
+                    list: $s.tabs[i].title,
+                    name: $s.tabs[i].list[j].name,
+                    complete: $s.tabs[i].list[j].complete
+                });
+                count++;
+            }
+        }
+    }
+    $s.moveToTab = function(ToList,currentList,item){
+        // transfer item and update todoApi
+        currentList -= 1;
+        ToList -= 1;
+        $s.tabs[ToList].list.push(item);
+        for(var i = 0 ; i<$s.tabs[currentList].list.length ; i++){
+            if($s.tabs[currentList].list[i].name == item.name){   
+                if($s.tabs[currentList].list.length == 1){
+                    $s.totalTab--;
+                 }   
+                $s.tabs[currentList].list.splice(i, 1);
+            }
+        }
+        $s.update();
+        getData();
+    }
 }])
     .factory('todoApi', [function () {
     var data = [
         {
-            list: 'shopping',
+            list: 'Shopping',
             name: 'buy eggs',
             complete: false
         }, 
         {
-            list: 'shopping',
+            list: 'Shopping',
             name: 'buy milk',
             complete: true
         },
         {
-            list: 'business',
+            list: 'Business',
             name: 'collect underpants',
             complete: false
         }, 
         {
-            list: 'business',
+            list: 'Business',
             name: '...',
             complete: false
         }, 
         {
-            list: 'business',
+            list: 'Business',
             name: 'profit',
             complete: false
         }

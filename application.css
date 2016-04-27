@@ -1,7 +1,17 @@
 
 body{
 	padding-left: 20;
+	font-family: "Georgia";
 }
+
+.listPage{
+		border-style: ridge;
+		background-color: #EDF2F6;
+		margin: 20px 220px;
+		padding: 30px 50px;
+		padding-top: 15px;
+}
+
 .done {
     text-decoration: line-through;
 }

@@ -19,56 +19,38 @@
   </ul>
 
     <br><br><hr/>
+    <div class ="listPage">
 
-    <div ng-show="ui.isCurrent(0);">
-      <h3>Create New List</h3>
-      <br>
-        Name of the list:
-        <input type="text" ng-model="newTabName">
-        <button class="btn btn-success" ng-click="create()">
-          <span class="glyphicon glyphicon-save"></span>  Create
-        </button>
-    </div>
-
-    <div ng-controller="tab1" ng-show="ui.isCurrent(1);">
-      <h3>To do List 1  <button type="button" class="btn btn-default" ng-click="editorEnabled=!editorEnabled" >
-        <span class="glyphicon glyphicon-pencil"></span> Edit</button></h3>
+      <div ng-show="ui.isCurrent(0);">
+        <h1>Create New List</h1>
         <br>
-        Add To Do:
-        <input type="text" ng-model="newList">
-        <button class="btn btn-success" ng-click="add()">
-          <span class="glyphicon glyphicon-save"></span>  Add
-        </button>
-        <ul ng-repeat="item in list">
-            <li ng-class="{ 'done': item.complete }">{{item.name}}
-              <input type="checkbox" ng-checked="item.complete" ng-model="checkboxModel" ng-change= "item.complete = checkboxModel" >
-            </li>
-            <span ng-show="editorEnabled"> Move To List
-                <input class="trans" ng-model="moveIndex" type="number" min="1">
-                <button type="button" class="btn btn-primary" ng-click="moveToTab(moveIndex)">Move!</button>
-            </span>
-        </ul>
+          <strong>Name of the list:</strong>
+          <input type="text" ng-model="newTabName">
+          <button class="btn btn-success" ng-click="create()">
+            <span class="glyphicon glyphicon-save"></span>  Create
+          </button>
+      </div>
+
+      <div ng-repeat="tab in tabs" ng-show="ui.isCurrent(tab.number);">
+        <h1>{{tab.title}}  <button type="button" class="btn btn-default" ng-click="editorEnabled=!editorEnabled" >
+          <span class="glyphicon glyphicon-pencil"></span> Edit</button></h1><br>
+          <strong>Add To Do:</strong>
+          <input type="text" ng-model="newList">
+          <button class="btn btn-success" ng-click="add(tab,newList)">
+            <span class="glyphicon glyphicon-save"></span>  Add
+          </button>
+          <ul ng-repeat="item in tab.list">
+              <li ng-class="{ 'done': item.complete }">{{item.name}}
+              <input type="checkbox" ng-checked="item.complete" ng-model="checkboxModel" ng-change= "item.complete = checkboxModel" ng-click="update()">
+              </li>
+              <span ng-show="editorEnabled"> Move To List
+                  <input class="trans" ng-model="moveIndex" type="number" min="1" max={{totalTab}}>
+                  <button type="button" class="btn btn-primary" ng-click="moveToTab(moveIndex,tab.number,item)">Move!</button>
+              </span>
+          </ul>
+      </div>
+
     </div>
-
-    <div ng-repeat="tab in tabs" ng-show="ui.isCurrent(tab.number);">
-      <h3>{{tab.title}}  <button type="button" class="btn btn-default" ng-click="editorEnabled=!editorEnabled" >
-        <span class="glyphicon glyphicon-pencil"></span> Edit</button></h3><br>
-        Add To Do:
-        <input type="text" ng-model="newList">
-        <button class="btn btn-success" ng-click="add(tab,newList)">
-          <span class="glyphicon glyphicon-save"></span>  Add
-        </button>
-        <ul ng-repeat="item in tab.list">
-            <li ng-class="{ 'done': item.complete }">{{item.name}}
-            <input type="checkbox" ng-checked="item.complete" ng-model="checkboxModel" ng-change= "item.complete = checkboxModel">
-            </li>
-            <span ng-show="editorEnabled"> Move To List
-                <input class="trans" ng-model="moveIndex" type="number" min="1">
-                <button type="button" class="btn btn-primary" ng-click="moveToTab(moveIndex)">Move!</button>
-            </span>
-        </ul>
-  </div>
-
 </div>
 
 </body>
