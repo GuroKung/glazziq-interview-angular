@@ -3,7 +3,8 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
   <title></title>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+
+  <script src="angular.min.js"></script>
   <script src="application.js"></script>
   <link rel="stylesheet" type="text/css" href="application.css">
   <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -11,7 +12,7 @@
 
 <body>
 
-<div ng-app="todo" ng-controller="page"> 
+<div ng-app="todo" ng-controller="page">
 
   <ul class="nav navbar-nav">
     <li ng-repeat="tab in tabs"><a href="" ng-click="ui.current(tab.number)">{{tab.title}}</a></li>
